@@ -1,106 +1,126 @@
-<div class="container">
-  <header class="header">
+<main class="main-container animate-fade-in">
+  <header class="header animate-slide-down">
     <h1>Calculadora de Horas de Trabalho para Comprar um Produto</h1>
-    <p class="subtitle">Veja quantas horas você precisa trabalhar para pagar um item baseado no seu salário.</p>
+    <p class="description">Descubra quanto tempo da sua vida você precisa dedicar para adquirir aquele item desejado.
+    </p>
   </header>
 
-  <div class="content">
-    <mat-card class="input-section">
-      <mat-card-header>
-        <mat-card-title>1. Informe seus dados</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <form [formGroup]="calcForm" class="form-grid">
+  <div class="content-grid animate-slide-up">
 
-          <!-- Salário Mensal -->
-          <mat-form-field appearance="outline">
-            <mat-label>Salário Mensal</mat-label>
-            <input matInput type="text" formControlName="monthlySalary" appCurrencyMask placeholder="R$ 0,00">
-            <mat-hint>Seu ganho total no mês</mat-hint>
-            <mat-error *ngIf="calcForm.get('monthlySalary')?.hasError('required')">
-              Campo obrigatório
-            </mat-error>
-          </mat-form-field>
+    <!-- Card 1: Form Application -->
+    <div class="card form-card">
+      <div class="card-header">
+        <div class="card-number">1</div>
+        <h2>Informe seus dados</h2>
+      </div>
 
-          <!-- Preço do Produto -->
-          <mat-form-field appearance="outline">
-            <mat-label>Preço do Produto</mat-label>
-            <input matInput type="text" formControlName="productPrice" appCurrencyMask placeholder="R$ 0,00">
-            <mat-hint>Valor do item que deseja comprar</mat-hint>
-            <mat-error *ngIf="calcForm.get('productPrice')?.hasError('required')">
-              Campo obrigatório
-            </mat-error>
-          </mat-form-field>
+      <form [formGroup]="calcForm" (ngSubmit)="calculate()">
 
-          <!-- Horas por Dia -->
-          <mat-form-field appearance="outline">
-            <mat-label>Horas trabalhadas por dia</mat-label>
-            <input matInput type="number" formControlName="hoursPerDay" min="1" max="24">
-            <mat-hint>Ex: 8 horas</mat-hint>
-            <mat-error *ngIf="calcForm.get('hoursPerDay')?.hasError('required')">
-              Campo obrigatório
-            </mat-error>
-            <mat-error *ngIf="calcForm.get('hoursPerDay')?.hasError('min') || calcForm.get('hoursPerDay')?.hasError('max')">
-              Entre 1 e 24
-            </mat-error>
-          </mat-form-field>
-
-          <!-- Dias por Mês -->
-          <mat-form-field appearance="outline">
-            <mat-label>Dias trabalhados por mês</mat-label>
-            <input matInput type="number" formControlName="daysPerMonth" min="1" max="31">
-            <mat-hint>Ex: 22 dias</mat-hint>
-            <mat-error *ngIf="calcForm.get('daysPerMonth')?.hasError('required')">
-              Campo obrigatório
-            </mat-error>
-            <mat-error *ngIf="calcForm.get('daysPerMonth')?.hasError('min') || calcForm.get('daysPerMonth')?.hasError('max')">
-              Entre 1 e 31
-            </mat-error>
-          </mat-form-field>
-
-        </form>
-
-        <div class="actions">
-          <button mat-stroked-button color="warn" (click)="reset()">Limpar</button>
-          <button mat-raised-button color="primary" (click)="calculate()" [disabled]="calcForm.invalid">Calcular</button>
+        <div class="form-group">
+          <div class="label-wrapper">
+            <label for="monthlySalary" class="required">Salário Mensal</label>
+          </div>
+          <input pInputText appCurrencyMask type="tel" formControlName="monthlySalary" id="monthlySalary"
+            placeholder="R$ 0,00" class="w-full">
+          <div class="helper-text">Seu ganho total no mês</div>
         </div>
-      </mat-card-content>
-    </mat-card>
 
-    <mat-card class="result-section">
-      <mat-card-header>
-        <mat-card-title>2. Resultado</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="result-grid">
+        <div class="form-group">
+          <div class="label-wrapper">
+            <label for="productPrice" class="required">Preço do Produto</label>
+          </div>
+          <input pInputText appCurrencyMask type="tel" formControlName="productPrice" id="productPrice"
+            placeholder="R$ 0,00" class="w-full">
+          <div class="helper-text">Valor do item que deseja comprar</div>
+        </div>
 
-          <div class="result-item">
-            <span class="label">Valor da sua Hora</span>
-            <span class="value highlight">
-              {{ hourlyRate !== null ? (hourlyRate | currency:'BRL') : '---' }}
-            </span>
+        <div class="form-group">
+          <div class="label-wrapper">
+            <label for="hoursPerDay" class="required">Horas trabalhadas por dia</label>
+          </div>
+          <p-inputNumber formControlName="hoursPerDay" inputId="hoursPerDay" placeholder="8" [min]="1" [max]="24"
+            styleClass="w-full">
+          </p-inputNumber>
+          <div class="helper-text">Ex: 8 horas</div>
+        </div>
+
+        <div class="form-group">
+          <div class="label-wrapper">
+            <label for="daysPerMonth" class="required">Dias trabalhados por mês</label>
+          </div>
+          <p-inputNumber formControlName="daysPerMonth" inputId="daysPerMonth" placeholder="24" [min]="1" [max]="31"
+            styleClass="w-full">
+          </p-inputNumber>
+          <div class="helper-text">Ex: 22 dias</div>
+        </div>
+
+        <div class="button-group">
+          <button pButton type="button" label="Limpar" class="p-button-secondary" (click)="reset()">
+          </button>
+          <button pButton type="submit" label="Calcular" class="p-button-primary" style="flex: 1;">
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Card 2: Results -->
+    <div class="card result-card">
+      <div class="card-header">
+        <div class="card-number">2</div>
+        <h2>Resultado</h2>
+      </div>
+
+      <div class="result-content">
+        <!-- Empty State -->
+        <div *ngIf="!hasCalculated" class="empty-state animate-fade-in">
+          <div class="empty-icon">📊</div>
+          <p>Preencha os dados e clique em Calcular para ver o resultado detalhado.</p>
+        </div>
+
+        <!-- Calculated State -->
+        <div *ngIf="hasCalculated" class="results-list">
+
+          <div class="result-item animate-appear">
+            <div class="result-label">Valor da sua Hora</div>
+            <div class="result-value">
+              {{ hourlyRate | currency:'BRL':'symbol':'1.2-2' }}
+            </div>
           </div>
 
-          <div class="result-item">
-            <span class="label">Horas de trabalho necessárias</span>
-            <span class="value">
-              {{ hoursNeeded !== null ? (hoursNeeded | number:'1.1-1') + ' horas' : '---' }}
-            </span>
+          <div class="result-item animate-appear">
+            <div class="result-label">Horas de trabalho necessárias</div>
+            <div class="result-value">
+              {{ hoursNeeded | number:'1.1-1' }} horas
+            </div>
           </div>
 
-          <div class="result-item">
-            <span class="label">Dias equivalentes</span>
-            <span class="value">
-              {{ daysNeeded !== null ? (daysNeeded | number:'1.1-1') + ' dias' : '---' }}
-            </span>
+          <div class="result-item animate-appear">
+            <div class="result-label">Dias equivalentes</div>
+            <div class="result-value">
+              {{ daysNeeded | number:'1.1-1' }} dias
+            </div>
+          </div>
+
+          <div class="result-item progress-item animate-appear" *ngIf="effortPercentage !== null">
+            <div class="result-label">Comprometimento Mensal</div>
+
+            <div class="progress-container">
+              <div class="progress-fill" [style.width.%]="effortPercentage > 100 ? 100 : effortPercentage"
+                [class.over-budget]="effortPercentage > 100">
+              </div>
+            </div>
+
+            <div class="progress-text">
+              Este produto consome
+              <span class="highlight">{{ effortPercentage | number:'1.0-1' }}%</span>
+              do seu esforço mensal
+            </div>
           </div>
 
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
+
   </div>
-</div>
-
-<footer class="footer">
-  <p>Desenvolvido por <a href="https://alex-santos-dev.netlify.app/" target="_blank" rel="noopener noreferrer">Alex Santos</a></p>
-</footer>
+</main>

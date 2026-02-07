@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ButtonModule } from 'primeng/button';
 import { CurrencyMaskDirective } from './currency-mask.directive';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +12,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    CurrencyMaskDirective,
-    MatSnackBarModule
+    InputTextModule,
+    InputNumberModule,
+    ButtonModule,
+    CurrencyMaskDirective
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -31,11 +27,13 @@ export class AppComponent {
   hourlyRate: number | null = null;
   hoursNeeded: number | null = null;
   daysNeeded: number | null = null;
+  effortPercentage: number | null = null;
+  hasCalculated = false;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder) {
     this.calcForm = this.fb.group({
-      monthlySalary: [null, [Validators.required, Validators.min(0)]],
-      productPrice: [null, [Validators.required, Validators.min(0)]],
+      monthlySalary: [null, [Validators.required]],
+      productPrice: [null, [Validators.required]],
       hoursPerDay: [null, [Validators.required, Validators.min(1), Validators.max(24)]],
       daysPerMonth: [null, [Validators.required, Validators.min(1), Validators.max(31)]]
     });
@@ -46,39 +44,40 @@ export class AppComponent {
     this.hourlyRate = null;
     this.hoursNeeded = null;
     this.daysNeeded = null;
-
-    this.snackBar.open('Formulário limpo!', 'Fechar', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'bottom'
-    });
+    this.effortPercentage = null;
+    this.hasCalculated = false;
   }
 
   calculate() {
     if (this.calcForm.invalid) {
-      console.error(`Formulário inválido: ${JSON.stringify(this.calcForm.errors)}`);
-      this.hourlyRate = null;
-      this.hoursNeeded = null;
-      this.daysNeeded = null;
+      this.calcForm.markAllAsTouched();
       return;
     }
 
     const { monthlySalary, productPrice, hoursPerDay, daysPerMonth } = this.calcForm.value;
 
     if (monthlySalary && productPrice && hoursPerDay && daysPerMonth) {
-      // ValorHora = SalarioMensal / (HorasDia * DiasMes)
+      // 1. Valor da Hora = Relatório Mensal / (HorasDia * DiasMes)
       this.hourlyRate = monthlySalary / (hoursPerDay * daysPerMonth);
 
-      // HorasParaComprar = PrecoProduto / ValorHora
+      // 2. Horas Necessárias = PreçoProduto / ValorHora
       if (this.hourlyRate && this.hourlyRate > 0) {
         this.hoursNeeded = productPrice / this.hourlyRate;
 
-        // DiasParaComprar = HorasParaComprar / HorasDia
+        // 3. Dias Equivalentes = HorasNecessárias / HorasDia
         this.daysNeeded = this.hoursNeeded / hoursPerDay;
+
+        // 4. Porcentagem de Esforço Mensal
+        const totalMonthlyHours = hoursPerDay * daysPerMonth;
+        this.effortPercentage = (this.hoursNeeded / totalMonthlyHours) * 100;
+
       } else {
         this.hoursNeeded = 0;
         this.daysNeeded = 0;
+        this.effortPercentage = 0;
       }
+
+      this.hasCalculated = true;
     }
   }
 }
