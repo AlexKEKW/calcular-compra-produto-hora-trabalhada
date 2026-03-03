@@ -1,12 +1,13 @@
 <main class="main-container animate-fade-in">
   <header class="header animate-slide-down">
     <h1>Calculadora de Horas de Trabalho para Comprar um Produto</h1>
-    <p class="description">Descubra quanto tempo da sua vida você precisa dedicar para adquirir aquele item desejado.
+    <p class="description">
+      Descubra quanto tempo da sua vida você precisa dedicar para adquirir
+      aquele item desejado.
     </p>
   </header>
 
   <div class="content-grid animate-slide-up">
-
     <!-- Card 1: Form Application -->
     <div class="card form-card">
       <div class="card-header">
@@ -15,52 +16,96 @@
       </div>
 
       <form [formGroup]="calcForm" (ngSubmit)="calculate()">
-
         <div class="form-group">
           <div class="label-wrapper">
             <label for="monthlySalary" class="required">Salário Mensal</label>
           </div>
-          <input pInputText appCurrencyMask type="tel" formControlName="monthlySalary" id="monthlySalary"
-            placeholder="R$ 0,00" class="w-full">
-          <div class="helper-text">Seu ganho total no mês</div>
+          <input
+            pInputText
+            appCurrencyMask
+            type="tel"
+            formControlName="monthlySalary"
+            id="monthlySalary"
+            placeholder="R$ 0,00"
+            class="w-full"
+          />
+          <div *ngIf="calcForm.get('monthlySalary')?.invalid && calcForm.get('monthlySalary')?.touched" class="error-text">
+            <i class="pi pi-exclamation-circle"></i> O salário mensal é obrigatório
+          </div>
+          <div *ngIf="!(calcForm.get('monthlySalary')?.invalid && calcForm.get('monthlySalary')?.touched)" class="helper-text">Seu ganho total no mês</div>
         </div>
 
         <div class="form-group">
           <div class="label-wrapper">
             <label for="productPrice" class="required">Preço do Produto</label>
           </div>
-          <input pInputText appCurrencyMask type="tel" formControlName="productPrice" id="productPrice"
-            placeholder="R$ 0,00" class="w-full">
-          <div class="helper-text">Valor do item que deseja comprar</div>
+          <input
+            pInputText
+            appCurrencyMask
+            type="tel"
+            formControlName="productPrice"
+            id="productPrice"
+            placeholder="R$ 0,00"
+            class="w-full"
+          />
+          <div *ngIf="calcForm.get('productPrice')?.invalid && calcForm.get('productPrice')?.touched" class="error-text">
+            <i class="pi pi-exclamation-circle"></i> O preço do produto é obrigatório
+          </div>
+          <div *ngIf="!(calcForm.get('productPrice')?.invalid && calcForm.get('productPrice')?.touched)" class="helper-text">Valor do item que deseja comprar</div>
         </div>
 
         <div class="form-group">
           <div class="label-wrapper">
-            <label for="hoursPerDay" class="required">Horas trabalhadas por dia</label>
+            <label for="hoursPerDay" class="required"
+              >Horas trabalhadas por dia</label
+            >
           </div>
-          <p-inputNumber formControlName="hoursPerDay" inputId="hoursPerDay" placeholder="8" [min]="1" [max]="24"
-            styleClass="w-full">
+          <p-inputNumber
+            formControlName="hoursPerDay"
+            inputId="hoursPerDay"
+            placeholder="8"
+            [min]="1"
+            [max]="24"
+            styleClass="w-full"
+          >
           </p-inputNumber>
-          <div class="helper-text">Ex: 8 horas</div>
+          <div *ngIf="calcForm.get('hoursPerDay')?.invalid && calcForm.get('hoursPerDay')?.touched" class="error-text">
+            <i class="pi pi-exclamation-circle"></i> Informe de 1 a 24 horas
+          </div>
+          <div *ngIf="!(calcForm.get('hoursPerDay')?.invalid && calcForm.get('hoursPerDay')?.touched)" class="helper-text">Ex: 8 horas</div>
         </div>
 
         <div class="form-group">
           <div class="label-wrapper">
-            <label for="daysPerMonth" class="required">Dias trabalhados por mês</label>
+            <label for="daysPerMonth" class="required"
+              >Dias trabalhados por mês</label
+            >
           </div>
-          <p-inputNumber formControlName="daysPerMonth" inputId="daysPerMonth" placeholder="24" [min]="1" [max]="31"
-            styleClass="w-full">
+          <p-inputNumber
+            formControlName="daysPerMonth"
+            inputId="daysPerMonth"
+            placeholder="24"
+            [min]="1"
+            [max]="31"
+            styleClass="w-full"
+          >
           </p-inputNumber>
-          <div class="helper-text">Ex: 22 dias</div>
+          <div *ngIf="calcForm.get('daysPerMonth')?.invalid && calcForm.get('daysPerMonth')?.touched" class="error-text">
+            <i class="pi pi-exclamation-circle"></i> Informe de 1 a 31 dias
+          </div>
+          <div *ngIf="!(calcForm.get('daysPerMonth')?.invalid && calcForm.get('daysPerMonth')?.touched)" class="helper-text">Ex: 22 dias</div>
         </div>
 
         <div class="button-group">
-          <button pButton type="button" label="Limpar" class="p-button-secondary" (click)="reset()">
+          <button pButton type="button" class="btn-action btn-limpar w-full" (click)="reset()">
+            <i class="pi pi-trash" style="font-size: 1.25rem;"></i>
+            <span>Limpar</span>
           </button>
-          <button pButton type="submit" label="Calcular" class="p-button-primary" style="flex: 1;">
+          <button pButton type="submit" class="btn-action btn-calcular w-full" [disabled]="calcForm.invalid" (click)="calculate()">
+            <i class="pi pi-calculator" style="font-size: 1rem;"></i>
+            <span>Calcular</span>
           </button>
         </div>
-
       </form>
     </div>
 
@@ -75,52 +120,61 @@
         <!-- Empty State -->
         <div *ngIf="!hasCalculated" class="empty-state animate-fade-in">
           <div class="empty-icon">📊</div>
-          <p>Preencha os dados e clique em Calcular para ver o resultado detalhado.</p>
+          <p>
+            Preencha os dados e clique em Calcular para ver o resultado
+            detalhado.
+          </p>
         </div>
 
         <!-- Calculated State -->
         <div *ngIf="hasCalculated" class="results-list">
-
           <div class="result-item animate-appear">
             <div class="result-label">Valor da sua Hora</div>
             <div class="result-value">
-              {{ hourlyRate | currency:'BRL':'symbol':'1.2-2' }}
+              {{ hourlyRate | currency: "BRL" : "symbol" : "1.2-2" }}
             </div>
           </div>
 
           <div class="result-item animate-appear">
             <div class="result-label">Horas de trabalho necessárias</div>
             <div class="result-value">
-              {{ hoursNeeded | number:'1.1-1' }} horas
+              {{ hoursNeeded | number: "1.1-1" }} horas
             </div>
           </div>
 
           <div class="result-item animate-appear">
             <div class="result-label">Dias equivalentes</div>
             <div class="result-value">
-              {{ daysNeeded | number:'1.1-1' }} dias
+              {{ daysNeeded | number: "1.1-1" }} dias
             </div>
           </div>
 
-          <div class="result-item progress-item animate-appear" *ngIf="effortPercentage !== null">
+          <div
+            class="result-item progress-item animate-appear"
+            *ngIf="effortPercentage !== null"
+          >
             <div class="result-label">Comprometimento Mensal</div>
 
             <div class="progress-container">
-              <div class="progress-fill" [style.width.%]="effortPercentage > 100 ? 100 : effortPercentage"
-                [class.over-budget]="effortPercentage > 100">
-              </div>
+              <div
+                class="progress-fill"
+                [style.width.%]="
+                  effortPercentage > 100 ? 100 : effortPercentage
+                "
+                [class.over-budget]="effortPercentage > 100"
+              ></div>
             </div>
 
             <div class="progress-text">
               Este produto consome
-              <span class="highlight">{{ effortPercentage | number:'1.0-1' }}%</span>
+              <span class="highlight"
+                >{{ effortPercentage | number: "1.0-1" }}%</span
+              >
               do seu esforço mensal
             </div>
           </div>
-
         </div>
       </div>
     </div>
-
   </div>
 </main>

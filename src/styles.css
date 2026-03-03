@@ -1,5 +1,5 @@
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 /* PrimeIcons */
 @import "primeicons/primeicons.css";
@@ -7,36 +7,40 @@
 /* Design System Variables */
 :root {
   /* Colors */
-  --primary-500: #5B4EFF;
-  --primary-400: #4A3EE6;
-  --primary-50: #F5F4FF;
+  --primary-500: #5b4eff;
+  --primary-400: #4a3ee6;
+  --primary-50: #f5f4ff;
 
-  --neutral-900: #1A1A1A;
+  --neutral-900: #1a1a1a;
   /* Text Primary */
-  --neutral-700: #4A4A4A;
+  --neutral-700: #4a4a4a;
   /* Input Labels */
   --neutral-600: #666666;
   /* Helper Text */
-  --neutral-500: #999999;
-  /* Placeholders */
-  --neutral-300: #D4D4D4;
+  --neutral-500: #8e8e93;
+  /* Muted placeholder text */
+  --neutral-400: #c7c7cc;
+  /* Border grey */
+  --neutral-300: #d1d1d6;
   /* Hover/Border darker */
-  --neutral-200: #E5E5E5;
+  --neutral-200: #e5e5e5;
   /* Borders */
-  --neutral-100: #F5F5F5;
+  --neutral-100: #f5f5f5;
   /* Bg Light */
-  --neutral-050: #FAFAFA;
+  --neutral-050: #fafafa;
   /* Card Bg */
 
-  --danger-500: #EF4444;
+  --danger-500: #ef4444;
 
-  --bg-start: #F5F4FF;
-  --bg-end: #E8E6FF;
+  --bg-start: #f5f4ff;
+  --bg-end: #e8e6ff;
 
   /* Shadows */
   --shadow-focus: 0px 0px 0px 3px rgba(91, 78, 255, 0.12);
-  --shadow-card: 0px 8px 24px rgba(0, 0, 0, 0.12), 0px 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-card-hover: 0px 12px 32px rgba(0, 0, 0, 0.15), 0px 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-card:
+    0px 8px 24px rgba(0, 0, 0, 0.12), 0px 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover:
+    0px 12px 32px rgba(0, 0, 0, 0.15), 0px 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-btn-hover: 0px 4px 12px rgba(91, 78, 255, 0.3);
 
   /* Spacing */
@@ -47,9 +51,14 @@
 
   /* Radius */
   --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+}
+
+::selection {
+  background-color: rgba(91, 78, 255, 0.15);
+  color: var(--primary-500);
 }
 
 /* Reset & Base */
@@ -60,7 +69,11 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
   min-height: 100vh;
   color: var(--neutral-900);
@@ -169,7 +182,7 @@ h2 {
 
 /* PrimeNG Overrides for Design System */
 .p-component {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .p-inputnumber {
@@ -196,9 +209,11 @@ h2 {
   box-shadow: var(--shadow-focus);
 }
 
-.p-inputtext::placeholder {
-  color: var(--neutral-500);
-  font-weight: 500;
+.p-inputtext::placeholder,
+input::placeholder {
+  color: var(--neutral-400) !important;
+  font-weight: 400 !important;
+  opacity: 1 !important;
 }
 
 /* Button Overrides */
@@ -238,6 +253,23 @@ h2 {
   border-color: var(--neutral-300);
 }
 
+input.ng-invalid.ng-touched,
+p-inputnumber.ng-invalid.ng-touched .p-inputtext,
+.p-inputtext.ng-invalid.ng-touched {
+  border-color: var(--danger-500) !important;
+}
+
+.error-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--danger-500);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: fadeIn 300ms ease forwards;
+}
+
 /* Card Class (Generic) */
 .card {
   background: white;
@@ -258,73 +290,71 @@ h2 {
 
 label {
   font-size: 13px;
-  font-weight: 500;
-  color: var(--neutral-700);
+  font-weight: 600;
+  color: var(--neutral-900);
 }
 
 label.required::after {
-  content: '*';
+  content: "*";
   color: var(--danger-500);
   margin-left: 2px;
 }
 
 .helper-text {
-  margin-top: 4px;
+  margin-top: 6px;
   font-size: 12px;
-  color: var(--neutral-600);
-}/* Progress Bar Styles */
+  color: var(--neutral-500);
+  font-weight: 400;
+} /* Progress Bar Styles */
 .progress-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: transparent;
-    /* Clean look */
-    border-left: none;
-    padding: 16px 0 0 0;
-    border-top: 1px solid var(--neutral-200);
-    border-radius: 0;
-    margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: transparent;
+  /* Clean look */
+  border-left: none;
+  padding: 16px 0 0 0;
+  border-top: 1px solid var(--neutral-200);
+  border-radius: 0;
+  margin-top: 8px;
 }
 
 .progress-item:hover {
-    background: transparent;
-    transform: none;
+  background: transparent;
+  transform: none;
 }
 
 .progress-container {
     width: 100%;
-    height: 6px;
-    /* Thin line */
-    background-color: var(--neutral-200);
-    /* Pastel gray */
-    border-radius: 4px;
+    height: 8px;
+    background-color: var(--neutral-100);
+    border-radius: 100px;
     overflow: hidden;
     position: relative;
+    border: 1px solid var(--neutral-200);
 }
 
 .progress-fill {
     height: 100%;
-    background-color: var(--primary-400);
-    /* Pastel purple default */
-    border-radius: 4px;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-400));
+    border-radius: 100px;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .progress-fill.over-budget {
-    background-color: #F87171;
-    /* Pastel red for danger */
+    background: linear-gradient(90deg, #EF4444, #F87171);
 }
 
 .progress-text {
-    font-size: 13px;
-    color: var(--neutral-600);
+  font-size: 13px;
+  color: var(--neutral-600);
 }
 
 .progress-text .highlight {
-    font-weight: 700;
-    color: var(--primary-500);
+  font-weight: 700;
+  color: var(--primary-500);
 }
 
-.progress-fill.over-budget+.progress-text .highlight {
-    color: #EF4444;
+.progress-fill.over-budget + .progress-text .highlight {
+  color: #ef4444;
 }
