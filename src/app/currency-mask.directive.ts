@@ -63,6 +63,6 @@ export class CurrencyMaskDirective implements OnInit {
     // but here we are just setting the value. However, setting the value on the control
     // might trigger the input again in some setups, but usually safe with setValue.
     // IMPORTANT: We want the model to store the NUMBER, not the string.
-    this.control.control?.setValue(numberVal, { emitEvent: false, emitModelToViewChange: false });
+    this.control.control?.setValue(numberVal, { emitModelToViewChange: false });
   }
 }

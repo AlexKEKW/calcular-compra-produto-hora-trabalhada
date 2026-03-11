@@ -151,23 +151,17 @@
 
           <div
             class="result-item progress-item animate-appear"
-            *ngIf="effortPercentage !== null"
+            *ngIf="effortPercentage !== null && chartData"
           >
-            <div class="result-label">Comprometimento Mensal</div>
+            <div class="result-label" style="margin-bottom: 0;">Comprometimento Mensal</div>
 
-            <div class="progress-container">
-              <div
-                class="progress-fill"
-                [style.width.%]="
-                  effortPercentage > 100 ? 100 : effortPercentage
-                "
-                [class.over-budget]="effortPercentage > 100"
-              ></div>
+            <div class="chart-container" style="height: 70px; margin: 16px 0;">
+              <p-chart type="bar" [data]="chartData" [options]="chartOptions" height="70px"></p-chart>
             </div>
 
-            <div class="progress-text">
+            <div class="progress-text" style="text-align: center;">
               Este produto consome
-              <span class="highlight"
+              <span class="highlight" [style.color]="effortPercentage > 100 ? '#ef4444' : 'var(--primary-500)'"
                 >{{ effortPercentage | number: "1.0-1" }}%</span
               >
               do seu esforço mensal
