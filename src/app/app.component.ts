@@ -99,7 +99,7 @@ export class AppComponent {
     // or just display the real value if it overflows to be visually striking.
     const isOverBudget = this.effortPercentage! > 100;
     const progressColor = isOverBudget ? '#ef4444' : '#5b4eff'; 
-    const remainingColor = '#f4f4f5';
+    const remainingColor = '#d4d4d8'; // Cinza mais escuro para o "Tempo Livre"
 
     let displayPercentage = this.effortPercentage!;
     let remainingPercentage = 100 - displayPercentage;
@@ -107,6 +107,9 @@ export class AppComponent {
     if (displayPercentage > 100) {
       remainingPercentage = 0; // Don't show negative remaining space
     }
+
+    const isFull = displayPercentage >= 100;
+    const isZero = displayPercentage <= 0;
 
     this.chartData = {
       labels: ['Progresso'],
@@ -116,7 +119,7 @@ export class AppComponent {
           backgroundColor: progressColor,
           data: [displayPercentage],
           barPercentage: 0.5,
-          borderRadius: 100, // fully rounded ends
+          borderRadius: isFull ? 100 : { topLeft: 100, bottomLeft: 100, topRight: 0, bottomRight: 0 },
           borderSkipped: false
         },
         {
@@ -124,7 +127,7 @@ export class AppComponent {
           backgroundColor: remainingColor,
           data: [remainingPercentage],
           barPercentage: 0.5,
-          borderRadius: 100,
+          borderRadius: isZero ? 100 : { topRight: 100, bottomRight: 100, topLeft: 0, bottomLeft: 0 },
           borderSkipped: false
         }
       ]
